@@ -14,128 +14,121 @@ import {
   InputAdornment,
   ThemeProvider,
   createTheme,
-  CssBaseline
+  CssBaseline,
+  LinearProgress,
+  Avatar
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import CloudIcon from '@mui/icons-material/Cloud';
+import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import AirIcon from '@mui/icons-material/Air';
-import WbTwilightIcon from '@mui/icons-material/WbTwilight';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import CompressIcon from '@mui/icons-material/Compress';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
-// Material 3 theme configuration
+// Modern gradient-based theme matching the mockup
 const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#6750A4',
-      surface: '#FEF7FF',
-      onSurface: '#1D1B20',
-      container: '#EADDFF',
-      onContainer: '#21005D'
+      main: '#8B5CF6',
+      light: '#A78BFA',
+      dark: '#7C3AED',
     },
     secondary: {
-      main: '#625B71',
-      container: '#E8DEF8',
-      onContainer: '#1D192B'
-    },
-    tertiary: {
-      main: '#7D5260',
-      container: '#FFD8E4',
-      onContainer: '#31111D'
-    },
-    surface: {
-      main: '#FEF7FF',
-      variant: '#E7E0EC'
+      main: '#F59E0B',
+      light: '#FCD34D',
+      dark: '#D97706',
     },
     background: {
-      default: '#FEF7FF',
-      paper: '#FEF7FF'
+      default: '#F8FAFC',
+      paper: '#FFFFFF'
     },
     text: {
-      primary: '#1D1B20',
-      secondary: '#49454F'
+      primary: '#1F2937',
+      secondary: '#6B7280'
     }
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    displayLarge: {
-      fontSize: '3.5rem',
-      fontWeight: 400,
-      lineHeight: 1.12,
-      letterSpacing: '-0.25px'
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h1: {
+      fontSize: '4rem',
+      fontWeight: 300,
+      lineHeight: 1.2,
     },
-    displayMedium: {
-      fontSize: '2.8rem',
+    h2: {
+      fontSize: '2.5rem',
       fontWeight: 400,
-      lineHeight: 1.16,
-      letterSpacing: 0
+      lineHeight: 1.3,
     },
-    headlineLarge: {
+    h3: {
       fontSize: '2rem',
-      fontWeight: 400,
-      lineHeight: 1.25,
-      letterSpacing: 0
-    },
-    headlineMedium: {
-      fontSize: '1.75rem',
-      fontWeight: 400,
-      lineHeight: 1.29,
-      letterSpacing: 0
-    },
-    titleLarge: {
-      fontSize: '1.375rem',
       fontWeight: 500,
-      lineHeight: 1.27,
-      letterSpacing: 0
+      lineHeight: 1.4,
     },
-    bodyLarge: {
-      fontSize: '1rem',
-      fontWeight: 400,
+    h4: {
+      fontSize: '1.5rem',
+      fontWeight: 500,
+      lineHeight: 1.4,
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
       lineHeight: 1.5,
-      letterSpacing: '0.5px'
     },
-    labelLarge: {
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.6,
+    },
+    body2: {
       fontSize: '0.875rem',
-      fontWeight: 500,
-      lineHeight: 1.43,
-      letterSpacing: '0.1px'
+      lineHeight: 1.5,
     }
   },
   shape: {
-    borderRadius: 20
+    borderRadius: 16
   },
   components: {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
-          boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24)',
+          borderRadius: 24,
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          border: 'none',
           '&:hover': {
-            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3)'
-          }
-        }
-      }
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          '& .MuiOutlinedInput-root': {
-            borderRadius: 28,
-            backgroundColor: '#E7E0EC',
-            '&:hover': {
-              backgroundColor: '#E0D9E6'
-            },
-            '&.Mui-focused': {
-              backgroundColor: '#E7E0EC'
-            }
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)'
           }
         }
       }
     }
   }
 });
+
+const getWeatherIcon = (condition, size = 40) => {
+  const iconStyle = { fontSize: size, color: '#F59E0B' };
+  
+  if (condition.includes('sun') || condition.includes('clear')) {
+    return <WbSunnyIcon sx={iconStyle} />;
+  } else if (condition.includes('cloud')) {
+    return <CloudIcon sx={iconStyle} />;
+  } else if (condition.includes('rain') || condition.includes('storm')) {
+    return <ThunderstormIcon sx={iconStyle} />;
+  } else if (condition.includes('snow')) {
+    return <AcUnitIcon sx={iconStyle} />;
+  }
+  return <WbSunnyIcon sx={iconStyle} />;
+};
 
 function App() {
   const [location, setLocation] = useState('');
@@ -176,347 +169,316 @@ function App() {
       <CssBaseline />
       <Box sx={{ 
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #FEF7FF 0%, #F3E5F5 50%, #E1BEE7 100%)',
-        py: 3
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        py: 2,
+        px: 1
       }}>
-        <Container maxWidth="lg">
-          {/* Header */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            mb: 4,
-            mt: 2
-          }}>
-            <WbSunnyIcon sx={{ 
-              fontSize: 40, 
-              color: theme.palette.primary.main, 
-              mr: 2 
-            }} />
-            <Typography 
-              variant="displayMedium" 
-              sx={{ 
-                color: theme.palette.text.primary,
-                fontWeight: 500
-              }}
-            >
-              WeatherWise
-            </Typography>
-          </Box>
-
-          {/* Search Card */}
-          <Card sx={{ 
-            mb: 4, 
-            backgroundColor: theme.palette.surface.main,
-            border: `1px solid ${theme.palette.surface.variant}`
-          }}>
-            <CardContent sx={{ p: 3 }}>
-              <Box component="form" onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  placeholder="Search for a city or location..."
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  variant="outlined"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LocationOnIcon color="primary" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton 
-                          type="submit" 
-                          sx={{ 
-                            bgcolor: theme.palette.primary.main,
-                            color: 'white',
-                            '&:hover': {
-                              bgcolor: theme.palette.primary.dark
-                            }
-                          }}
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        border: 'none'
-                      }
-                    }
-                  }}
-                />
+        <Container maxWidth="sm" sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+          
+          {/* Header with search */}
+          <Box sx={{ mb: 3, mt: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LocationOnIcon sx={{ color: 'white', mr: 1 }} />
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 500 }}>
+                  {weatherData ? `${weatherData.location.name}, ${weatherData.location.country}` : 'Weather App'}
+                </Typography>
               </Box>
-            </CardContent>
-          </Card>
+              <IconButton 
+                onClick={() => setLocation('')}
+                sx={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  color: 'white',
+                  '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.3)' }
+                }}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Box>
+
+            {/* Search Field */}
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                placeholder="Search location..."
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderRadius: 3,
+                    '& fieldset': {
+                      border: 'none'
+                    },
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)'
+                    }
+                  }
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton type="submit" edge="end">
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Box>
+          </Box>
 
           {loading && (
             <Box sx={{ textAlign: 'center', my: 4 }}>
-              <Typography variant="bodyLarge" color="text.secondary">
-                Finding weather information...
+              <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+                Loading weather...
               </Typography>
+              <LinearProgress sx={{ borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.3)' }} />
             </Box>
           )}
 
           {error && (
-            <Card sx={{ mb: 4, bgcolor: '#FFEBEE' }}>
+            <Card sx={{ mb: 2, bgcolor: 'rgba(255, 255, 255, 0.9)' }}>
               <CardContent>
-                <Typography variant="bodyLarge" color="error">
-                  {error}
-                </Typography>
+                <Typography color="error">{error}</Typography>
               </CardContent>
             </Card>
           )}
 
           {weatherData && (
-            <Grid container spacing={3}>
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              
               {/* Main Weather Card */}
-              <Grid item xs={12} lg={8}>
-                <Card sx={{ 
-                  background: 'linear-gradient(135deg, #6750A4 0%, #8E7CC3 100%)',
-                  color: 'white',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}>
-                  <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 }}>
-                    {/* Location */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <LocationOnIcon sx={{ mr: 1, opacity: 0.9 }} />
-                      <Typography variant="titleLarge">
-                        {weatherData.location.name}, {weatherData.location.country}
+              <Card sx={{ 
+                mb: 3,
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)',
+                backdropFilter: 'blur(10px)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                <CardContent sx={{ p: 3, textAlign: 'center' }}>
+                  
+                  {/* Large Temperature Display */}
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+                    <Typography variant="h1" sx={{ 
+                      fontWeight: 200, 
+                      color: '#1F2937',
+                      mr: 1
+                    }}>
+                      {Math.round(weatherData.current.temp_c)}°
+                    </Typography>
+                    {getWeatherIcon(weatherData.current.condition.text.toLowerCase(), 80)}
+                  </Box>
+
+                  <Typography variant="h5" sx={{ 
+                    color: '#6B7280', 
+                    mb: 3,
+                    textTransform: 'capitalize'
+                  }}>
+                    {weatherData.current.condition.text}
+                  </Typography>
+
+                  {/* Feels Like & Day/Night */}
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderRadius: 2,
+                    p: 2,
+                    mb: 2
+                  }}>
+                    <Box sx={{ textAlign: 'left' }}>
+                      <Typography variant="body2" color="text.secondary">
+                        Feels like
+                      </Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        {Math.round(weatherData.current.feelslike_c)}°
                       </Typography>
                     </Box>
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {weatherData.current.is_day ? 'Day' : 'Night'}
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontSize: '0.75rem' }}>
+                        {new Date().toLocaleDateString('en-US', { 
+                          weekday: 'long',
+                          day: 'numeric',
+                          month: 'short'
+                        })}
+                      </Typography>
+                    </Box>
+                  </Box>
 
-                    {/* Main Temperature */}
-                    <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      mb: 3
-                    }}>
-                      <Box>
-                        <Typography variant="displayLarge" sx={{ fontWeight: 300, mb: 1 }}>
-                          {Math.round(weatherData.current.temp_c)}°
-                        </Typography>
-                        <Typography variant="headlineMedium" sx={{ opacity: 0.9, textTransform: 'capitalize' }}>
-                          {weatherData.current.condition.text}
+                  {/* Weather Metrics Grid */}
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <Box sx={{ 
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                        borderRadius: 2, 
+                        p: 2,
+                        textAlign: 'center'
+                      }}>
+                        <AirIcon sx={{ fontSize: 24, color: '#8B5CF6', mb: 1 }} />
+                        <Typography variant="body2" color="text.secondary">Wind Speed</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {weatherData.current.wind_kph} km/h
                         </Typography>
                       </Box>
-                      <WbSunnyIcon sx={{ fontSize: 120, opacity: 0.3 }} />
-                    </Box>
-
-                    {/* Weather Details Grid */}
-                    <Grid container spacing={3}>
-                      <Grid item xs={6} sm={3}>
-                        <Box sx={{ textAlign: 'center' }}>
-                          <ThermostatIcon sx={{ fontSize: 32, mb: 1, opacity: 0.9 }} />
-                          <Typography variant="labelLarge" sx={{ opacity: 0.8, display: 'block' }}>
-                            Feels like
-                          </Typography>
-                          <Typography variant="titleLarge">
-                            {Math.round(weatherData.current.feelslike_c)}°C
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6} sm={3}>
-                        <Box sx={{ textAlign: 'center' }}>
-                          <OpacityIcon sx={{ fontSize: 32, mb: 1, opacity: 0.9 }} />
-                          <Typography variant="labelLarge" sx={{ opacity: 0.8, display: 'block' }}>
-                            Humidity
-                          </Typography>
-                          <Typography variant="titleLarge">
-                            {weatherData.current.humidity}%
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6} sm={3}>
-                        <Box sx={{ textAlign: 'center' }}>
-                          <AirIcon sx={{ fontSize: 32, mb: 1, opacity: 0.9 }} />
-                          <Typography variant="labelLarge" sx={{ opacity: 0.8, display: 'block' }}>
-                            Wind
-                          </Typography>
-                          <Typography variant="titleLarge">
-                            {weatherData.current.wind_kph} km/h
-                          </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6} sm={3}>
-                        <Box sx={{ textAlign: 'center' }}>
-                          <WbTwilightIcon sx={{ fontSize: 32, mb: 1, opacity: 0.9 }} />
-                          <Typography variant="labelLarge" sx={{ opacity: 0.8, display: 'block' }}>
-                            UV Index
-                          </Typography>
-                          <Typography variant="titleLarge">
-                            {weatherData.current.uv}
-                          </Typography>
-                        </Box>
-                      </Grid>
                     </Grid>
-                  </CardContent>
-                  
-                  {/* Background decoration */}
-                  <Box sx={{
-                    position: 'absolute',
-                    top: -50,
-                    right: -50,
-                    width: 200,
-                    height: 200,
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    zIndex: 0
-                  }} />
-                </Card>
-              </Grid>
-
-              {/* Sidebar with additional info */}
-              <Grid item xs={12} lg={4}>
-                <Grid container spacing={2}>
-                  {/* Today's Highlights */}
-                  <Grid item xs={12}>
-                    <Card>
-                      <CardContent>
-                        <Typography variant="titleLarge" sx={{ mb: 2 }}>
-                          Today's Highlights
+                    <Grid item xs={6}>
+                      <Box sx={{ 
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                        borderRadius: 2, 
+                        p: 2,
+                        textAlign: 'center'
+                      }}>
+                        <OpacityIcon sx={{ fontSize: 24, color: '#8B5CF6', mb: 1 }} />
+                        <Typography variant="body2" color="text.secondary">Humidity</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {weatherData.current.humidity}%
                         </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                          <Box sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-between',
-                            p: 2,
-                            bgcolor: theme.palette.surface.variant,
-                            borderRadius: 2
-                          }}>
-                            <Typography variant="bodyLarge">Visibility</Typography>
-                            <Typography variant="labelLarge" sx={{ fontWeight: 600 }}>
-                              {weatherData.current.vis_km} km
-                            </Typography>
-                          </Box>
-                          <Box sx={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-between',
-                            p: 2,
-                            bgcolor: theme.palette.surface.variant,
-                            borderRadius: 2
-                          }}>
-                            <Typography variant="bodyLarge">Pressure</Typography>
-                            <Typography variant="labelLarge" sx={{ fontWeight: 600 }}>
-                              {weatherData.current.pressure_mb} mb
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </CardContent>
-                    </Card>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ 
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                        borderRadius: 2, 
+                        p: 2,
+                        textAlign: 'center'
+                      }}>
+                        <VisibilityIcon sx={{ fontSize: 24, color: '#8B5CF6', mb: 1 }} />
+                        <Typography variant="body2" color="text.secondary">Visibility</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {weatherData.current.vis_km} km
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box sx={{ 
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                        borderRadius: 2, 
+                        p: 2,
+                        textAlign: 'center'
+                      }}>
+                        <CompressIcon sx={{ fontSize: 24, color: '#8B5CF6', mb: 1 }} />
+                        <Typography variant="body2" color="text.secondary">Pressure</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {weatherData.current.pressure_mb} mb
+                        </Typography>
+                      </Box>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Grid>
+                </CardContent>
+              </Card>
 
               {/* Hourly Forecast */}
               {weatherData.forecast && (
-                <Grid item xs={12}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="titleLarge" sx={{ mb: 3 }}>
-                        24-Hour Forecast
-                      </Typography>
-                      <Box sx={{ 
-                        display: 'flex', 
-                        overflowX: 'auto', 
-                        gap: 2,
-                        pb: 1,
-                        '&::-webkit-scrollbar': {
-                          height: 8,
-                        },
-                        '&::-webkit-scrollbar-track': {
-                          background: theme.palette.surface.variant,
-                          borderRadius: 4,
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                          background: theme.palette.primary.main,
-                          borderRadius: 4,
-                        },
-                      }}>
-                        {weatherData.forecast.forecastday[0].hour.map((hour, index) => (
-                          <Card key={index} sx={{ 
-                            minWidth: 100, 
-                            textAlign: 'center',
-                            bgcolor: index === new Date().getHours() ? theme.palette.primary.container : 'transparent',
-                            border: `1px solid ${theme.palette.surface.variant}`
-                          }}>
-                            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                              <Typography variant="labelLarge" sx={{ mb: 1 }}>
-                                {new Date(hour.time).toLocaleTimeString('en-US', { 
-                                  hour: 'numeric',
-                                  hour12: true 
-                                })}
-                              </Typography>
-                              <WbSunnyIcon sx={{ 
-                                fontSize: 32, 
-                                color: theme.palette.tertiary.main,
-                                mb: 1 
-                              }} />
-                              <Typography variant="titleLarge">
-                                {Math.round(hour.temp_c)}°
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
+                <Card sx={{ 
+                  mb: 3,
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                      Hourly Forecast
+                    </Typography>
+                    <Box sx={{ 
+                      display: 'flex', 
+                      overflowX: 'auto', 
+                      gap: 2,
+                      pb: 1,
+                      '&::-webkit-scrollbar': { display: 'none' },
+                      msOverflowStyle: 'none',
+                      scrollbarWidth: 'none'
+                    }}>
+                      {weatherData.forecast.forecastday[0].hour.slice(0, 12).map((hour, index) => (
+                        <Card key={index} sx={{ 
+                          minWidth: 80, 
+                          textAlign: 'center',
+                          backgroundColor: index === 0 ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.05)',
+                          boxShadow: 'none'
+                        }}>
+                          <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
+                            <Typography variant="caption" sx={{ fontSize: '0.75rem' }}>
+                              {new Date(hour.time).toLocaleTimeString('en-US', { 
+                                hour: 'numeric',
+                                hour12: true 
+                              })}
+                            </Typography>
+                            <Box sx={{ my: 1 }}>
+                              {getWeatherIcon(hour.condition.text.toLowerCase(), 24)}
+                            </Box>
+                            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                              {Math.round(hour.temp_c)}°
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {hour.chance_of_rain}%
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </Box>
+                  </CardContent>
+                </Card>
               )}
 
-              {/* 3-Day Forecast */}
+              {/* Weekly Forecast */}
               {weatherData.forecast && (
-                <Grid item xs={12}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="titleLarge" sx={{ mb: 3 }}>
-                        3-Day Forecast
-                      </Typography>
-                      {weatherData.forecast.forecastday.map((day, index) => (
-                        <Box key={index}>
-                          <Box sx={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            py: 2,
-                            px: 1
-                          }}>
-                            <Typography variant="bodyLarge" sx={{ 
-                              flexGrow: 1, 
-                              fontWeight: index === 0 ? 600 : 400 
+                <Card sx={{ 
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                      {weatherData.forecast.forecastday.length}-Day Forecast
+                    </Typography>
+                    {weatherData.forecast.forecastday.map((day, index) => (
+                      <Box key={index}>
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          py: 2,
+                          px: 1
+                        }}>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="body1" sx={{ 
+                              fontWeight: index === 0 ? 600 : 400,
+                              fontSize: '0.9rem'
                             }}>
                               {index === 0 ? 'Today' : new Date(day.date).toLocaleDateString('en-US', { 
-                                weekday: 'long',
+                                weekday: 'short',
                                 month: 'short',
                                 day: 'numeric'
                               })}
                             </Typography>
-                            <WbSunnyIcon sx={{ 
-                              mx: 2, 
-                              color: theme.palette.tertiary.main 
-                            }} />
-                            <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 100 }}>
-                              <Typography variant="titleLarge" sx={{ fontWeight: 600 }}>
-                                {Math.round(day.day.maxtemp_c)}°
-                              </Typography>
-                              <Typography variant="bodyLarge" color="text.secondary" sx={{ ml: 1 }}>
-                                {Math.round(day.day.mintemp_c)}°
-                              </Typography>
-                            </Box>
+                            <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'capitalize' }}>
+                              {day.day.condition.text}
+                            </Typography>
                           </Box>
-                          {index < weatherData.forecast.forecastday.length - 1 && (
-                            <Divider sx={{ my: 1 }} />
-                          )}
+                          
+                          <Box sx={{ mr: 2 }}>
+                            {getWeatherIcon(day.day.condition.text.toLowerCase(), 32)}
+                          </Box>
+                          
+                          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 80, justifyContent: 'flex-end' }}>
+                            <Typography variant="body1" sx={{ fontWeight: 600, mr: 1 }}>
+                              {Math.round(day.day.maxtemp_c)}°
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {Math.round(day.day.mintemp_c)}°
+                            </Typography>
+                          </Box>
                         </Box>
-                      ))}
-                    </CardContent>
-                  </Card>
-                </Grid>
+                        {index < weatherData.forecast.forecastday.length - 1 && (
+                          <Divider sx={{ mx: 1 }} />
+                        )}
+                      </Box>
+                    ))}
+                  </CardContent>
+                </Card>
               )}
-            </Grid>
+            </Box>
           )}
         </Container>
       </Box>
